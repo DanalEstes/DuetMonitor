@@ -30,6 +30,7 @@ class PrinterClient {
 
 private:
   char myServer[100];
+  char myPass[33];
 
   void resetPrintData();
   boolean validate();
@@ -54,6 +55,7 @@ private:
     String bedTemp;
     String bedTargetTemp;
     boolean isPrinting;
+    boolean isConnected; 
     String error;
   } PrinterStruct;
 
@@ -76,6 +78,7 @@ public:
   String getProgressPrintTimeLeft();
   String getStatus();
   boolean isPrinting();
+  boolean isConnected();
   String getTempBedActual();
   String getTempBedTarget();
   String getTempToolActual();

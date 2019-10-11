@@ -46,9 +46,9 @@ SOFTWARE.
 // Initialize the oled display for I2C_DISPLAY_ADDRESS
 // SDA_PIN and SCL_PIN
 #if defined(DISPLAY_SH1106)
-  SH1106Wire     display(I2C_DISPLAY_ADDRESS, SDA_PIN, SCL_PIN);
+  SH1106Wire  display(I2C_DISPLAY_ADDRESS, SDA_PIN, SCL_PIN);
 #else
-  SSD1306Wire     display(I2C_DISPLAY_ADDRESS, SDA_PIN, SCL_PIN); // this is the default
+  SSD1306Wire display(I2C_DISPLAY_ADDRESS, SDA_PIN, SCL_PIN); 
 #endif
 
 OLEDDisplayUi   ui( &display );

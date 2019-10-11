@@ -30,6 +30,7 @@ PrinterClient::PrinterClient(String server, String pass) {
 
 void PrinterClient::updatePrinterClient(String server, String pass) {
   server.toCharArray(myServer, 100);
+    pass.toCharArray(myPass,   32);
 }
 
 boolean PrinterClient::validate() {
@@ -54,7 +55,6 @@ WiFiClient PrinterClient::getSubmitRequest(String apiGetData) {
   if (printClient.connect(myServer, 80)) {  //starts client connection, checks for connection
     printClient.println(apiGetData);
     printClient.println("Host: " + String(myServer) + ":" + String(myPort));
-    // Password??
     printClient.println("User-Agent: ArduinoWiFi/1.1");
     printClient.println("Connection: close");
     if (printClient.println() == 0) {
@@ -99,11 +99,25 @@ void PrinterClient::getPrinterJobResults() {
   if (!validate()) {
     return;
   }
+
+  if (String(myPass) != "" && !printerData.isConnected) {
+    String signOn = "GET /rr_connect?password=" + String(myPass);
+
+    WiFiClient printClient = getSubmitRequest(signOn);
+
+    if (printerData.error != "") {
+      Serial.println("rr_connect error: " + printerData.error);
+      return;
+    }
+    printerData.isConnected = true;
+  }
+
   String apiGetData = "GET /rr_status?type=3 HTTP/1.1";
 
   WiFiClient printClient = getSubmitRequest(apiGetData);
 
   if (printerData.error != "") {
+    Serial.println("rr_status error: " + printerData.error);
     return;
   }
   
@@ -188,6 +202,7 @@ void PrinterClient::resetPrintData() {
   printerData.bedTemp = "";
   printerData.bedTargetTemp = "";
   printerData.isPrinting = false;
+  printerData.isConnected = false;
   printerData.error = "";
 }
 
@@ -237,6 +252,10 @@ String PrinterClient::getStatus() {
 
 boolean PrinterClient::isPrinting() {
   return printerData.isPrinting;
+}
+
+boolean PrinterClient::isConnected() {
+  return printerData.isConnected;
 }
 
 String PrinterClient::getTempBedActual() {

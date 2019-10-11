@@ -46,8 +46,6 @@ SOFTWARE.
 #include "OpenWeatherMapClient.h"
 #include "WeatherStationFonts.h"
 #include "FS.h"
-//#include "SH1106Wire.h"
-#include "SSD1306Wire.h"
 #include "OLEDDisplayUi.h"
 
 //******************************
@@ -75,12 +73,31 @@ boolean IS_24HOUR = false;     // 23:00 millitary 24 hour clock
 int minutesBetweenDataRefresh = 15;
 boolean DISPLAYCLOCK = true;   // true = Show Clock when not printing / false = turn off display when not printing
 
-// Display Settings
-const int I2C_DISPLAY_ADDRESS = 0x3c; // I2C Address of your Display (usually 0x3c or 0x3d)
-const int SDA_PIN = D1;
-const int SCL_PIN = D2;
+// Display selection
+// "All in one" board with ESP, 0.9 Oled, and LiOn 18650 style battery (there is no part number)
+#include "SSD1306Wire.h"
+const int I2C_DISPLAY_ADDRESS = 0x3c; 
+const int SDA_PIN = D3;
+const int SCL_PIN = D4;
 const boolean INVERT_DISPLAY = true; // true = pins at top | false = pins at the bottom
+
+// Wemos Mini D1 with display plugged in so it gets +5 and GND and next two pins.
+//#include "SSD1306Wire.h"
+//const int I2C_DISPLAY_ADDRESS = 0x78; 
+//const int SDA_PIN = D3;
+//const int SCL_PIN = D4;
+//const boolean INVERT_DISPLAY = true; // true = pins at top | false = pins at the bottom
+
+// Wemos Mini D1 with display plugged in so it gets +5 and GND and next two pins.
+//#include "SH1106Wire.h"
 //#define DISPLAY_SH1106       // Uncomment this line to use the SH1106 display -- SSD1306 is used by default and is most common
+//const int I2C_DISPLAY_ADDRESS = 0x78;
+//const int SDA_PIN = D3;
+//const int SCL_PIN = D4;
+//const boolean INVERT_DISPLAY = false; // true = pins at top | false = pins at the bottom
+//#define DISPLAY_SH1106       // Uncomment this line to use the SH1106 display -- SSD1306 is used by default and is most common
+// End of display selection
+
 
 boolean ENABLE_OTA = true;     // this will allow you to load firmware to the device over WiFi (see OTA for ESP8266)
 String OTA_Password = "";      // Set an OTA password here -- leave blank if you don't want to be prompted for password
